@@ -1,0 +1,49 @@
+name: Python Selenium Tests
+
+on:
+  push:
+    branches:
+      - main  # Change to your default branch
+  pull_request:
+    branches:
+      - main  # Change to your default branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # Specify the version you need
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install selenium  # Install Selenium if not included in your requirements
+
+      - name: Run unit tests and log results
+        run: |
+          python -m unittest discover -s tests -p "login_page.py" | tee unit_test_results.log
+
+      - name: Run E2E tests and log results
+        run: |
+          python -m unittest discover -s tests -p "login_page.py" | tee e2e_test_results.log
+
+      - name: Run smoke tests and log results
+        run: |
+          python -m unittest discover -s tests -p "login_page.py" | tee smoke_test_results.log
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: |
+            unit_test_results.log
+            e2e_test_results.log
+            smoke_test_results.log
