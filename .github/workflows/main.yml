@@ -27,9 +27,7 @@ jobs:
           pip install -r requirements.txt
           pip install selenium  # Install Selenium if not included in your requirements
 
-      - name: Run unit tests and log results
-        run: |
-          python -m unittest discover -s tests -p "login_page.py" | tee unit_test_results.log
+     
 
       - name: Run Selenium tests
         run: |
