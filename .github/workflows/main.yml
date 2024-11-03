@@ -26,25 +26,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install selenium  # Install Selenium if not included in your requirements
-      - name: Check if log file exists before tests
-        run: ls -l test_results.log || echo "Log file does not exist yet"
 
-     
+     # Adjust the sleep duration based on your service readiness requirements
 
-      - name: Run Selenium tests
+      - name: Run Selenium tests and save output
         run: |
-          # Wait for Selenium service to be ready
-          sleep 10  # Adjust if necessary
-          python test.py > test_results.log || exit 0
-          cat test_results.log    # Display test results for debugging
+          python test.py > test_results.log 2>&1  # Capture both stdout and stderr
+          
       - name: Show test results log
-        run: cat test_results.log  
-
-      - name: Display log file contents
-        run: cat test_results.log  # Show the contents of the log file
+        run: cat test_results.log  # Display test results for debugging
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: test_results.log
+          path: test_results.log  # Correctly specify the path to the log file
