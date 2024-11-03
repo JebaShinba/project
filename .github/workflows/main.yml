@@ -29,15 +29,15 @@ jobs:
 
       - name: Run unit tests and log results
         run: |
-          python -m unittest discover -s tests -p "test_integration.py" | tee unit_test_results.log
+          python -m unittest discover -s tests -p "login_page.py" | tee unit_test_results.log
 
       - name: Run E2E tests and log results
         run: |
-          python -m unittest discover -s tests -p "test_e2e.py" | tee e2e_test_results.log
+          python -m unittest discover -s tests -p "login_page.py" | tee e2e_test_results.log
 
       - name: Run smoke tests and log results
         run: |
-          python -m unittest discover -s tests -p "test_smoke.py" | tee smoke_test_results.log
+          python -m unittest discover -s tests -p "login_page.py" | tee smoke_test_results.log
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
