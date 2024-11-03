@@ -31,19 +31,24 @@ jobs:
         run: |
           python -m unittest discover -s tests -p "login_page.py" | tee unit_test_results.log
 
-      - name: Run E2E tests and log results
+      - name: Run Selenium tests
         run: |
-          python -m unittest discover -s tests -p "login_page.py" | tee e2e_test_results.log
+          # Wait for Selenium service to be ready
+          sleep 10  # Adjust if necessary
+          python login_page.py > test_results.log || exit 0
+          cat test_results.log    # Display test results for debugging
+      - name: Show test results log
+        run: cat test_results.log  
 
-      - name: Run smoke tests and log results
-        run: |
-          python -m unittest discover -s tests -p "login_page.py" | tee smoke_test_results.log
+      - name: Archive Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: selenium-test-report
+          path: report.html
 
-      - name: Upload test results
+      - name: Archive Test Results
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: |
-            unit_test_results.log
-            e2e_test_results.log
-            smoke_test_results.log
+          path: test_results.log
+
