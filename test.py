@@ -2,8 +2,8 @@ import unittest
 from unittest.mock import MagicMock
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options  # Import Options here
 import time
-
 
 # Function to be tested
 def search_google(driver, query):
@@ -35,7 +35,11 @@ class TestGoogleE2E(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
-        cls.driver = webdriver.Chrome()  # Initialize the Chrome driver
+        chrome_options = Options()  # Use Options for the Chrome driver
+        chrome_options.add_argument("--headless")  # Run in headless mode
+        chrome_options.add_argument("--no-sandbox")  # Overcome limited resource problems
+        chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+        cls.driver = webdriver.Chrome(options=chrome_options)
 
     def test_search_selenium_python(self):
         self.driver.get("https://www.google.com")
@@ -59,7 +63,11 @@ class TestGoogleSmoke(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
-        cls.driver = webdriver.Chrome()
+        chrome_options = Options()  # Use Options for the Chrome driver
+        chrome_options.add_argument("--headless")  # Run in headless mode
+        chrome_options.add_argument("--no-sandbox")  # Overcome limited resource problems
+        chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+        cls.driver = webdriver.Chrome(options=chrome_options)
 
     def test_basic_google_search(self):
         self.driver.get("https://www.google.com")
@@ -80,4 +88,3 @@ class TestGoogleSmoke(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
