@@ -26,6 +26,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install selenium  # Install Selenium if not included in your requirements
+      - name: Check if log file exists before tests
+        run: ls -l test_results.log || echo "Log file does not exist yet"
 
      
 
@@ -38,15 +40,11 @@ jobs:
       - name: Show test results log
         run: cat test_results.log  
 
-      - name: Archive Test Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: selenium-test-report
-          path: report.html
+      - name: Display log file contents
+        run: cat test_results.log  # Show the contents of the log file
 
-      - name: Archive Test Results
+      - name: Upload test results
         uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: test_results.log
-
